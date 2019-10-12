@@ -15,4 +15,8 @@ defmodule CfWait do
   def hello do
     :world
   end
+
+  def start(_type, _args) do
+    CfWait.Supervisor.start_link
+  end
 end
