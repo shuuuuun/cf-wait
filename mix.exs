@@ -6,6 +6,7 @@ defmodule CfWait.MixProject do
       app: :cf_wait,
       version: "0.1.0",
       elixir: "~> 1.9",
+      escript: escript(),
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -24,6 +25,14 @@ defmodule CfWait.MixProject do
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
       {:ex_aws, "~> 2.1"},
+      {:hackney, "~> 1.15"},
+    ]
+  end
+
+  defp escript do
+    [
+      main_module: CfWait.CLI,
+      path: "bin/cf-wait"
     ]
   end
 end
