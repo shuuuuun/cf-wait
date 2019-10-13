@@ -14,7 +14,6 @@ if Code.ensure_loaded?(SweetXml) do
         quantity: ~x"./Quantity/text()"i,
         items: [
           ~x"./Items/DistributionSummary"l,
-          # id:  id_node(),
           id:  ~x"./Id/text()"s,
           status:  ~x"./Status/text()"s,
           domain_name:  ~x"./DomainName/text()"s,
@@ -24,10 +23,6 @@ if Code.ensure_loaded?(SweetXml) do
     end
 
     def parse(val, _), do: val
-
-    # defp id_node do
-    #   ~x"./Id/text()"s |> transform_by(&String.replace(&1, ~r/^.+?\//, ""))
-    # end
 
     defp to_boolean(xpath) do
       xpath |> transform_by(&(&1 == "true"))
