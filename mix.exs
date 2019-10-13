@@ -26,6 +26,7 @@ defmodule CfWait.MixProject do
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
       {:ex_aws, "~> 2.1"},
       {:hackney, "~> 1.15"},
+      {:poison, "~> 3.1"},
     ]
   end
 
