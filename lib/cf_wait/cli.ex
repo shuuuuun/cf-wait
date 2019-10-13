@@ -23,5 +23,6 @@ defmodule CfWait.CLI do
   end
   def process(:list_distributions) do
     CfWait.CloudFront.list_distributions
+    |> ExAws.request!
   end
 end
