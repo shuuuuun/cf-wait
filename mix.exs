@@ -27,6 +27,7 @@ defmodule CfWait.MixProject do
       {:ex_aws, "~> 2.1"},
       {:hackney, "~> 1.15"},
       {:poison, "~> 3.1"},
+      {:sweet_xml, "~> 0.6"},
     ]
   end
 
