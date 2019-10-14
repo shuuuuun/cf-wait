@@ -29,8 +29,8 @@ defmodule CfWait.CLI do
     list_distributions(opts)
     |> select_distribution(opts)
     |> wait_deployed(opts)
-    |> IO.inspect
-    # |> notify_deployed
+    |> notify_deployed
+    # |> IO.inspect
   end
   def process({:list_distributions, opts}) do
     list_distributions(opts)
@@ -50,6 +50,7 @@ defmodule CfWait.CLI do
     distributions
     |> Enum.with_index
     |> Enum.each(fn {dist, index} ->
+      # TODO: beautify outputs.
       IO.puts "#{index}: #{inspect dist}"
     end)
     index_list = 0..(Enum.count(distributions)-1) |> Enum.join("/")
@@ -60,6 +61,7 @@ defmodule CfWait.CLI do
         :error -> 0
       end
     selected_dist = Enum.at distributions, selected_num
+    # TODO: beautify outputs.
     IO.puts "#{selected_num}: #{inspect selected_dist}"
     selected_dist
   end
@@ -82,5 +84,13 @@ defmodule CfWait.CLI do
     IO.puts "status: #{distribution.status}"
     :timer.sleep(@wait_interval)
     wait_deployed(distribution, opts)
+  end
+
+  defp notify_deployed(:ok) do
+    # TODO: optimize notification for each OS.
+    IO.puts "Deployed!!!"
+  end
+  defp notify_deployed(result) do
+    IO.puts "result: #{result}"
   end
 end
