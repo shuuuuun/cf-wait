@@ -1,4 +1,6 @@
 defmodule CfWait.CLI do
+  @wait_interval 60 * 1000
+
   def main(argv) do
     argv
     |> parse_args
@@ -72,14 +74,14 @@ defmodule CfWait.CLI do
       |> ExAws.request!(debug_requests: true)
     case res.body do
       %{ id: ^id, status: "Deployed" } -> :ok
-      %{ id: ^id, status: status } -> _wait_deployed(id, status)
+      %{ id: ^id, status: _ } = body -> _wait_deployed(body)
     end
   end
 
-  defp _wait_deployed(id, status) do
+  defp _wait_deployed(distribution) do
     # TODO: max iteration count
-    IO.puts "status: #{status}"
-    :timer.sleep(60 * 1000)
-    wait_deployed(id)
+    IO.puts "status: #{distribution.status}"
+    :timer.sleep(@wait_interval)
+    wait_deployed(distribution)
   end
 end
