@@ -8,6 +8,8 @@ defmodule CfWait.CLI do
   end
 
   def parse_args(argv) do
+    # TODO: wait_interval option
+    # TODO: aws-profile option
     parse = OptionParser.parse(argv, switches: [help: :boolean, debug: :boolean], aliases: [h: :help])
     # IO.puts "parsed args: #{inspect parse}"
     case parse do
@@ -50,7 +52,7 @@ defmodule CfWait.CLI do
     distributions
     |> Enum.with_index
     |> Enum.each(fn {dist, index} ->
-      # TODO: beautify outputs.
+      # TODO: beautify outputs. table format?
       IO.puts "#{index}: #{inspect dist}"
     end)
     index_list = 0..(Enum.count(distributions)-1) |> Enum.join("/")
