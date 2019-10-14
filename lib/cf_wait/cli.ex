@@ -7,10 +7,10 @@ defmodule CfWait.CLI do
 
   def parse_args(argv) do
     parse = OptionParser.parse(argv, switches: [help: :boolean], aliases: [h: :help])
+    # IO.puts "parsed args: #{inspect parse}"
     case parse do
       { [ help: true ], _, _ } -> :help
-      # { _, [ user, project, count ], _ } -> { user, project, String.to_integer(count) }
-      # _ -> :list_distributions
+      { _, [ "list-distributions" ], _ } -> :list_distributions
       _ -> :run
       # _ -> :help
     end
@@ -31,6 +31,7 @@ defmodule CfWait.CLI do
   end
   def process(:list_distributions) do
     list_distributions()
+    |> IO.inspect
   end
 
   defp list_distributions do
@@ -76,6 +77,7 @@ defmodule CfWait.CLI do
   end
 
   defp _wait_deployed(id, status) do
+    # TODO: max iteration count
     IO.puts "status: #{status}"
     :timer.sleep(60 * 1000)
     wait_deployed(id)

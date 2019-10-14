@@ -6,6 +6,10 @@ exec-sample:
 run-main:
 	mix run -e 'CfWait.CLI.main([])'
 
+.PHONY: run-list-distributions
+run-list-distributions:
+	mix run -e 'CfWait.CLI.main(["list-distributions"])'
+
 .PHONY: run-help
 run-help:
 	mix run -e 'CfWait.CLI.main(["--help"])'
