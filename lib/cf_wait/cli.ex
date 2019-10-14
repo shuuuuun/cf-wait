@@ -25,8 +25,8 @@ defmodule CfWait.CLI do
   def process(:run) do
     list_distributions()
     |> select_distribution
+    |> wait_deployed
     |> IO.inspect
-    # |> wait_deployed
     # |> notify_deployed
   end
   def process(:list_distributions) do
@@ -36,7 +36,9 @@ defmodule CfWait.CLI do
   defp list_distributions do
     res =
       CfWait.CloudFront.list_distributions
-      |> ExAws.request!
+      # |> ExAws.request!
+      |> ExAws.request!(debug_requests: true)
+    # TODO: debug mode
     # IO.puts "res: #{inspect res}"
     res.body.items
   end
@@ -48,7 +50,6 @@ defmodule CfWait.CLI do
       IO.puts "#{index}: #{inspect dist}"
     end)
     index_list = 0..(Enum.count(distributions)-1) |> Enum.join("/")
-    # selected = IO.gets("which distribution? (#{index_list}) ") |> String.trim |> String.to_integer
     selected = IO.gets("which distribution? (#{index_list}) ") |> String.trim
     selected_num =
       case Integer.parse(selected) do
@@ -56,5 +57,27 @@ defmodule CfWait.CLI do
         :error -> 0
       end
     Enum.at distributions, selected_num
+  end
+
+  defp wait_deployed(distribution) do
+    # ref. https://docs.aws.amazon.com/cli/latest/reference/cloudfront/wait/distribution-deployed.html
+    # CfWait.CloudFront.wait_distribution_deployed
+    # |> ExAws.request!
+    id = distribution.id
+    IO.puts "id: #{id}"
+    res =
+      CfWait.CloudFront.get_distribution(id)
+      # |> (fn arg -> IO.puts(inspect(arg)); arg end).()
+      |> ExAws.request!(debug_requests: true)
+    case res.body do
+      %{ id: ^id, status: "Deployed" } -> :ok
+      %{ id: ^id, status: status } -> _wait_deployed(id, status)
+    end
+  end
+
+  defp _wait_deployed(id, status) do
+    IO.puts "status: #{status}"
+    :timer.sleep(60 * 1000)
+    wait_deployed(id)
   end
 end
