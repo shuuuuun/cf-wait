@@ -14,10 +14,17 @@ if Code.ensure_loaded?(SweetXml) do
         quantity: ~x"./Quantity/text()"i,
         items: [
           ~x"./Items/DistributionSummary"l,
-          id:  ~x"./Id/text()"s,
-          status:  ~x"./Status/text()"s,
-          domain_name:  ~x"./DomainName/text()"s,
-          comment:  ~x"./Comment/text()"s
+          id: ~x"./Id/text()"s,
+          status: ~x"./Status/text()"s,
+          domain_name: ~x"./DomainName/text()"s,
+          comment: ~x"./Comment/text()"s,
+          aliases: [
+            ~x"./Aliases"l,
+            items: [
+              ~x"./Items"l,
+              cname: ~x"./CNAME/text()"s
+            ],
+          ],
         ]
       )
     end
