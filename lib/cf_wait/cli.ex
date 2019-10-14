@@ -8,12 +8,13 @@ defmodule CfWait.CLI do
   end
 
   def parse_args(argv) do
-    parse = OptionParser.parse(argv, switches: [help: :boolean], aliases: [h: :help])
+    parse = OptionParser.parse(argv, switches: [help: :boolean, debug: :boolean], aliases: [h: :help])
     # IO.puts "parsed args: #{inspect parse}"
     case parse do
       { [ help: true ], _, _ } -> :help
-      { _, [ "list-distributions" ], _ } -> :list_distributions
-      _ -> :run
+      { opts, [ "list-distributions" ], _ } -> { :list_distributions, opts }
+      { opts, _, _ } -> { :run, opts }
+      _ -> { :run, [] }
       # _ -> :help
     end
   end
@@ -24,29 +25,28 @@ defmodule CfWait.CLI do
     """
     System.halt(0)
   end
-  def process(:run) do
-    list_distributions()
-    |> select_distribution
-    |> wait_deployed
+  def process({:run, opts}) do
+    list_distributions(opts)
+    |> select_distribution(opts)
+    |> wait_deployed(opts)
     |> IO.inspect
     # |> notify_deployed
   end
-  def process(:list_distributions) do
-    list_distributions()
+  def process({:list_distributions, opts}) do
+    list_distributions(opts)
     |> IO.inspect
   end
 
-  defp list_distributions do
+  defp list_distributions(opts) do
+    is_debug = Keyword.get(opts, :debug, false)
     res =
       CfWait.CloudFront.list_distributions
-      |> ExAws.request!
-      # |> ExAws.request!(debug_requests: true)
-    # TODO: debug mode
+      |> ExAws.request!(debug_requests: is_debug)
     # IO.puts "res: #{inspect res}"
     res.body.items
   end
 
-  defp select_distribution(distributions) do
+  defp select_distribution(distributions, _opts) do
     distributions
     |> Enum.with_index
     |> Enum.each(fn {dist, index} ->
@@ -64,27 +64,23 @@ defmodule CfWait.CLI do
     selected_dist
   end
 
-  defp wait_deployed(distribution) do
+  defp wait_deployed(distribution, opts) do
     # ref. https://docs.aws.amazon.com/cli/latest/reference/cloudfront/wait/distribution-deployed.html
-    # CfWait.CloudFront.wait_distribution_deployed
-    # |> ExAws.request!
+    is_debug = Keyword.get(opts, :debug, false)
     id = distribution.id
-    # IO.puts "id: #{id}"
     res =
       CfWait.CloudFront.get_distribution(id)
-      # |> (fn arg -> IO.puts(inspect(arg)); arg end).()
-      # |> ExAws.request!(debug_requests: true)
-      |> ExAws.request!
+      |> ExAws.request!(debug_requests: is_debug)
     case res.body do
       %{ id: ^id, status: "Deployed" } -> :ok
-      %{ id: ^id, status: _ } = body -> _wait_deployed(body)
+      %{ id: ^id, status: _ } = body -> _wait_deployed(body, opts)
     end
   end
 
-  defp _wait_deployed(distribution) do
+  defp _wait_deployed(distribution, opts) do
     # TODO: max iteration count
     IO.puts "status: #{distribution.status}"
     :timer.sleep(@wait_interval)
-    wait_deployed(distribution)
+    wait_deployed(distribution, opts)
   end
 end
