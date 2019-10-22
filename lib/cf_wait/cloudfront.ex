@@ -21,7 +21,7 @@ defmodule CfWait.CloudFront do
 
   defp request(http_method, action, opts) do
     path = Keyword.get(opts, :path, "")
-    params = opts |> Keyword.get(:params, []) |> rename_keys(max_items: :maxitems) |> Map.new
+    params = opts |> Keyword.get(:params, []) |> rename_keys(max_items: :maxitems) |> Map.new()
 
     %ExAws.Operation.RestQuery{
       http_method: http_method,

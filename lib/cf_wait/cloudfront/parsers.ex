@@ -6,7 +6,8 @@ if Code.ensure_loaded?(SweetXml) do
     import SweetXml, only: [sigil_x: 2]
 
     def parse({:ok, resp}, :list_distributions) do
-      resp |> parse_xml(~x"//DistributionList",
+      resp
+      |> parse_xml(~x"//DistributionList",
         is_truncated: ~x"./IsTruncated/text()"s |> to_boolean,
         marker: ~x"./Marker/text()"s,
         max_items: ~x"./MaxItems/text()"i,
@@ -23,17 +24,18 @@ if Code.ensure_loaded?(SweetXml) do
             items: [
               ~x"./Items"l,
               cname: ~x"./CNAME/text()"s
-            ],
-          ],
+            ]
+          ]
         ]
       )
     end
 
     def parse({:ok, resp}, :get_distribution) do
-      resp |> parse_xml(~x"//Distribution",
-        id:  ~x"./Id/text()"s,
-        status:  ~x"./Status/text()"s,
-        domain_name:  ~x"./DomainName/text()"s
+      resp
+      |> parse_xml(~x"//Distribution",
+        id: ~x"./Id/text()"s,
+        status: ~x"./Status/text()"s,
+        domain_name: ~x"./DomainName/text()"s
       )
     end
 
