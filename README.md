@@ -1,10 +1,14 @@
 # CfWait
 
-**TODO: Add description**
+When using Amazon CloudFront, Select a distribution and wait for it to be deployed.
+
+Inspired by [distribution-deployed](https://docs.aws.amazon.com/cli/latest/reference/cloudfront/wait/distribution-deployed.html) command of AWS CLI. Written in Elixir.
+
 
 ## Features
 
 **TODO: Add features**
+
 
 ## Installation
 
@@ -17,6 +21,7 @@
     Then installed binary should be `~/.mix/escripts/cf-wait`.  
     For convenience, consider adding `~/.mix/escripts` directory to your `PATH` environment variable.
 
+
 ## Usage
 
 ```shell
@@ -25,9 +30,11 @@ $ cf-wait
 
 **TODO: Add more usage**
 
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/shuuuuun/cf-wait.
+
 
 ## License
 
