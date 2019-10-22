@@ -17,6 +17,7 @@ defmodule CfWait do
   end
 
   def start(_type, _args) do
+    # TODO: warning
     CfWait.Supervisor.start_link
   end
 end

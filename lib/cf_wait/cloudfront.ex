@@ -1,4 +1,7 @@
 # ref. https://docs.aws.amazon.com/ja_jp/cloudfront/latest/APIReference/API_Operations.html
+# ref. https://github.com/ex-aws/ex_aws
+# ref. https://github.com/ex-aws/ex_aws_route53/blob/master/lib/ex_aws/route53.ex
+
 defmodule CfWait.CloudFront do
   use ExAws.Utils,
     format_type: :xml,

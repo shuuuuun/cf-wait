@@ -28,6 +28,7 @@ defmodule CfWait.CLI do
     System.halt(0)
   end
   def process({:run, opts}) do
+    # TODO: check aws configuration
     list_distributions(opts)
     |> select_distribution(opts)
     |> wait_deployed(opts)

@@ -27,7 +27,7 @@ defmodule CfWait.MixProject do
       {:ex_aws, "~> 2.1"},
       {:hackney, "~> 1.15"},
       {:poison, "~> 3.1"},
-      {:sweet_xml, "~> 0.6"},
+      {:sweet_xml, "~> 0.6"}, # TODO: check https://nvd.nist.gov/vuln/detail/CVE-2019-15160?cpeVersion=2.2 and https://github.com/kbrw/sweet_xml/issues/71
     ]
   end
 
