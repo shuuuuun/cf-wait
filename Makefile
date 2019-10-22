@@ -1,6 +1,6 @@
 .PHONY: exec-sample
 exec-sample:
-	./bin/cf-wait
+	./cf-wait
 
 .PHONY: run-main
 run-main:
@@ -33,3 +33,11 @@ test:
 .PHONY: console
 console:
 	iex -S mix
+
+.PHONY: install-local
+install-local:
+	mix escript.install
+
+.PHONY: install-release
+install-release:
+	mix escript.install github shuuuuun/cf-wait
