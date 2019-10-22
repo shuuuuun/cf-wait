@@ -35,7 +35,6 @@ defmodule CfWait.MixProject do
     [
       name: "cf-wait",
       main_module: CfWait.CLI,
-      path: "bin/cf-wait"
     ]
   end
 end
