@@ -41,3 +41,7 @@ install-local:
 .PHONY: install-release
 install-release:
 	mix escript.install github shuuuuun/cf-wait
+
+.PHONY: format-code
+format-code:
+	mix format
