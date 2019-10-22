@@ -33,6 +33,7 @@ defmodule CfWait.MixProject do
 
   defp escript do
     [
+      name: "cf-wait",
       main_module: CfWait.CLI,
       path: "bin/cf-wait"
     ]
