@@ -15,7 +15,7 @@ run-help:
 	mix run -e 'CfWait.CLI.main(["--help"])'
 
 .PHONY: build
-build:
+build: get
 	MIX_ENV=prod mix escript.build
 
 .PHONY: get
